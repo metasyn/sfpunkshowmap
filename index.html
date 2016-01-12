@@ -9,7 +9,9 @@
 
     <!-- Deps -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
-    <script src='https://api.mapbox.com/mapbox.js/v2.2.3/mapbox.js'></script>
+    <script src="https://api.mapbox.com/mapbox.js/v2.2.3/mapbox.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.min.js"></script>
+
     <!-- Main -->
     <script src="mapper.js"></script>
 
@@ -29,6 +31,15 @@
 <body>
     <div id='map'></div>
 </body>
+
+<script id="template" type="x-tmpl-mustache">
+
+<h1> {{feature.properties.venue}} </h1>
+<h3> {{feature.properties.date}} </h3>
+<h2> {{feature.properties.bands}} </h2>
+<h2> {{feature.properties.details}} </h2>
+
+</script>
 
 
 </html>

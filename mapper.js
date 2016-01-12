@@ -58,7 +58,7 @@ function setupMap(){
 
     // Init map
     map = L.mapbox.map('map', 'mapbox.streets')
-      .setView([37.7600, -122.416], 14);
+      .setView([37.7600, -122.416], 13);
   
 
     if (map) {
@@ -83,6 +83,13 @@ lonlatDictionary = {
   'Chapel, S.F.': [-122.421198, 37.760528],
   'Regency Ballroom, S.F.': [ -122.421573, 37.787836],
   'Thee Parkside, S.F.': [-122.3999114, 37.765222],
+  'El Rio, S.F.': [-122.4216143, 37.7468],
+  'Knockout, S.F.': [-122.4221129, 37.7451999],
+  'Bottom of the Hill, S.F.': [-122.3986239, 37.7649937],
+  'Great American Music Hall, S.F.': [-122.4210104, 37.784807],
+  'Fillmore, S.F.': [-122.4352607, 37.7839302],
+  'Rickshaw Stop, S.F.': [-122.422641, 37.7760029],
+  'Independent, S.F.': [-122.4398436, 37.7755465]
 }
 
 /////////////
@@ -123,7 +130,7 @@ function sortByDate(j){
         'venue': venue,
         'date' : data[i]['a']['b'],
         'details': details,
-        'bands': bands.join('\n')
+        'bands': bands
       });
     }
   }
@@ -186,11 +193,7 @@ function plotShows(json){
         feature = marker.feature;
 
       // Create custom popup content
-      var popupContent =  '<h1>' + feature.properties.venue + '</h1>' + '</br>' +
-                '<h3>' + feature.properties.date + '</h3>' + '</br>' +
-                '<h2>' + feature.properties.bands.split().join('\n') + '</h2>' + '</br>' +
-                '</br></br>' + 
-                '<h2>' + feature.properties.details + '</h2>' + '</br>';
+      var popupContent = L.mapbox.template('<h1> {{properties.venue}} </h1><br><h3> {{properties.date}} </h3><br><h2> {{#properties.bands}} - {{.}} <br> {{/properties.bands}} </h2><br><h2> {{properties.details}} </h2><br>', feature)
 
       // http://leafletjs.com/reference.html#popup
       marker.bindPopup(popupContent,{
