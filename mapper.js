@@ -20,26 +20,26 @@ function get(url) {
 
   // Return a new promise.
   return new Promise(function(resolve, reject) {
-	
-	var req = new XMLHttpRequest();
-	req.open('GET', url);
+  
+  var req = new XMLHttpRequest();
+  req.open('GET', url);
 
-	req.onload = function() {
-	  if (req.status == 200) {
-	  	resp = JSON.parse(req.response);
-		resolve(console.log('Request success.'));;
-	  }
-	  else {
-		reject(console.log(Error(req.statusText)));
-	  }
-	};
+  req.onload = function() {
+    if (req.status == 200) {
+      resp = JSON.parse(req.response);
+    resolve(console.log('Request success.'));;
+    }
+    else {
+    reject(console.log(Error(req.statusText)));
+    }
+  };
 
-	// Handle network errors
-	req.onerror = function() {
-	  reject(Error("Network Error"));
-	};
+  // Handle network errors
+  req.onerror = function() {
+    reject(Error("Network Error"));
+  };
 
-	req.send();
+  req.send();
   });
 }
 
@@ -50,24 +50,24 @@ function get(url) {
 
 
 function setupMap(){
-	// Return a new promise
-	return new Promise(function(resolve, reject) {
+  // Return a new promise
+  return new Promise(function(resolve, reject) {
 
-		// easy to change online though if we suspect abuse
-		L.mapbox.accessToken = 'pk.eyJ1IjoibWV0YXN5biIsImEiOiIwN2FmMDNhNTRhOWQ3NDExODI1MTllMDk1ODc3NTllZiJ9.Bye80QJ4r0RJsKj4Sre6KQ';
+    // easy to change online though if we suspect abuse
+    L.mapbox.accessToken = 'pk.eyJ1IjoibWV0YXN5biIsImEiOiIwN2FmMDNhNTRhOWQ3NDExODI1MTllMDk1ODc3NTllZiJ9.Bye80QJ4r0RJsKj4Sre6KQ';
 
-		// Init map
-		map = L.mapbox.map('map', 'mapbox.streets')
-			.setView([37.7600, -122.416], 14);
-	
+    // Init map
+    map = L.mapbox.map('map', 'mapbox.streets')
+      .setView([37.7600, -122.416], 14);
+  
 
-	  if (map) {
-		resolve(console.log('Map is loaded.'));
-	  }
-	  else {
-		reject(console.log(Error('Map not loaded!')));
-	  }
-	});
+    if (map) {
+    resolve(console.log('Map is loaded.'));
+    }
+    else {
+    reject(console.log(Error('Map not loaded!')));
+    }
+  });
 }
 
 
@@ -78,11 +78,11 @@ function setupMap(){
 // Note: geojson requires lon-lat, not lat-lon.
 
 lonlatDictionary = {
-	'924 Gilman Street, Berkeley': [-122.2993211, 37.8795371],
-	'Hemlock, S.F.': [-122.420301, 37.787356],
-	'Chapel, S.F.': [-122.421198, 37.760528],
-	'Regency Ballroom, S.F.': [ -122.421573, 37.787836],
-	'Thee Parkside, S.F.': [-122.3999114, 37.765222],
+  '924 Gilman Street, Berkeley': [-122.2993211, 37.8795371],
+  'Hemlock, S.F.': [-122.420301, 37.787356],
+  'Chapel, S.F.': [-122.421198, 37.760528],
+  'Regency Ballroom, S.F.': [ -122.421573, 37.787836],
+  'Thee Parkside, S.F.': [-122.3999114, 37.765222],
 }
 
 /////////////
@@ -91,123 +91,123 @@ lonlatDictionary = {
 
 function sortByDate(j){
 
-	data = j['query']['results']['li'];
+  data = j['query']['results']['li'];
 
-	organized = {}
+  organized = {}
 
-	// loop through dates
-	for (var i = 0; i < data.length; i++){
+  // loop through dates
+  for (var i = 0; i < data.length; i++){
 
-		organized[data[i]['a']['b']] = [];
+    organized[data[i]['a']['b']] = [];
 
-		if (data[i]['ul']['li'].length == undefined){
-			data[i]['ul']['li'] = Array(data[i]['ul']['li'])
-		}
+    if (data[i]['ul']['li'].length == undefined){
+      data[i]['ul']['li'] = Array(data[i]['ul']['li'])
+    }
 
-		// loop through shows
-		for (var showIndex = 0; showIndex < data[i]['ul']['li'].length; showIndex++) { 
+    // loop through shows
+    for (var showIndex = 0; showIndex < data[i]['ul']['li'].length; showIndex++) { 
 
-			var show = data[i]['ul']['li'][showIndex];
-			var venue = show['b']['a']['content'];
-			var details = show['content'].slice(0, -1); // new line at the end
-			var lineup = show['a'];
+      var show = data[i]['ul']['li'][showIndex];
+      var venue = show['b']['a']['content'];
+      var details = show['content'].slice(0, -1); // new line at the end
+      var lineup = show['a'];
 
-			var bands = [];
+      var bands = [];
 
-			// loop through bands
-			for (var bandIndex = 0; bandIndex < lineup.length; bandIndex++){
-				bands.push(lineup[bandIndex]['content'])
-			}
+      // loop through bands
+      for (var bandIndex = 0; bandIndex < lineup.length; bandIndex++){
+        bands.push(lineup[bandIndex]['content'])
+      }
 
-			organized[data[i]['a']['b']].push({
-				'venue': venue,
-				'date' : data[i]['a']['b'],
-				'details': details,
-				'bands': bands.join('\n')
-			});
-		}
-	}
-	return organized
+      organized[data[i]['a']['b']].push({
+        'venue': venue,
+        'date' : data[i]['a']['b'],
+        'details': details,
+        'bands': bands.join('\n')
+      });
+    }
+  }
+  return organized
 }
 
 
 
 function geojsonify(data){
-	// this function returns a geojson object
+  // this function returns a geojson object
 
-	var features = []
-	var dateKeys = Object.keys(data)
+  var features = []
+  var dateKeys = Object.keys(data)
 
-	// loop through dates
-	for (var i = 0; i < dateKeys.length; i++){
+  // loop through dates
+  for (var i = 0; i < dateKeys.length; i++){
 
-		// loop through shows
-		for (var j = 0; j < data[dateKeys[i]].length; j++){
+    // loop through shows
+    for (var j = 0; j < data[dateKeys[i]].length; j++){
 
-			var show = {
-				"type": "Feature",
-				"geometry": {"type": "Point", "coordinates": lonlatDictionary[data[dateKeys[i]][j]['venue']] || [0, 0]},
-				"properties": {
-					"date": dateKeys[i],
-					"venue": data[dateKeys[i]][j]['venue'],
-					"bands": data[dateKeys[i]][j]['bands'],
-					"details": data[dateKeys[i]][j]['details'],
-					'marker-color': '#548cba',
-					'marker-size': 'large',
-					'marker-symbol': 'music'
-				}
-			}
+      var show = {
+        "type": "Feature",
+        "geometry": {"type": "Point", "coordinates": lonlatDictionary[data[dateKeys[i]][j]['venue']] || [0, 0]},
+        "properties": {
+          "date": dateKeys[i],
+          "venue": data[dateKeys[i]][j]['venue'],
+          "bands": data[dateKeys[i]][j]['bands'],
+          "details": data[dateKeys[i]][j]['details'],
+          'marker-color': '#548cba',
+          'marker-size': 'large',
+          'marker-symbol': 'music'
+        }
+      }
 
-			// add show to features array
-			features.push(show)
+      // add show to features array
+      features.push(show)
 
-		}
-	}
+    }
+  }
 
-	// format for valid geojson
-	var geojson = { "type": "FeatureCollection", "features": features }
-	return geojson
+  // format for valid geojson
+  var geojson = { "type": "FeatureCollection", "features": features }
+  return geojson
 }
 
 
 
 function plotShows(json){
 
-	return new Promise(function(resolve, reject){
+  return new Promise(function(resolve, reject){
 
-		// get that geojson
-		var geojson = geojsonify(sortByDate(json));
+    // get that geojson
+    var geojson = geojsonify(sortByDate(json));
 
-		// empty layer
-		var myLayer = L.mapbox.featureLayer().addTo(map)
+    // empty layer
+    var myLayer = L.mapbox.featureLayer().addTo(map)
 
-		myLayer.on('layeradd', function(e) {
-			var marker = e.layer,
-				feature = marker.feature;
+    myLayer.on('layeradd', function(e) {
+      var marker = e.layer,
+        feature = marker.feature;
 
-			// Create custom popup content
-			var popupContent =  '<h1>' + feature.properties.venue + '</h1>' + '</br>' +
-								'<h3>' + feature.properties.date + '</h3>' + '</br>' +
-								'<h2>' + feature.properties.bands.split().join('\n') + '</h2>' + '</br>' +
-								'</br></br>' + 
-								'<h2>' + feature.properties.details + '</h2>' + '</br>';
+      // Create custom popup content
+      var popupContent =  '<h1>' + feature.properties.venue + '</h1>' + '</br>' +
+                '<h3>' + feature.properties.date + '</h3>' + '</br>' +
+                '<h2>' + feature.properties.bands.split().join('\n') + '</h2>' + '</br>' +
+                '</br></br>' + 
+                '<h2>' + feature.properties.details + '</h2>' + '</br>';
 
-			// http://leafletjs.com/reference.html#popup
-			marker.bindPopup(popupContent,{
-				closeButton: true,
-				minWidth: 320
-			});
-		});
+      // http://leafletjs.com/reference.html#popup
+      marker.bindPopup(popupContent,{
+        closeButton: true,
+        minWidth: 320
+      });
+    });
 
-		myLayer.setGeoJSON(geojson);
+    myLayer.setGeoJSON(geojson);
 
-		if (geojson){
-			resolve(console.log('Shows plotted.'))
-		}
-		else { 
-			reject(console.log(Error('Shows cannot be plotted.')));
-		}
-	});
+    if (geojson){
+      resolve(console.log('Shows plotted.'))
+    }
+    else { 
+      reject(console.log(Error('Shows cannot be plotted.')));
+    }
+  });
 }
 
 
@@ -231,18 +231,18 @@ get(yql_url).then(resolve => {setupMap(); plotShows(resp)})
 
 function fetchGeo(venue){
 
-	// api key
-	var apiKey = "AIzaSyDCyj1LQMqFPcQhgfW92vR8BtXhlDIvF-4";
-	// request
-	var geocoder = "https://maps.googleapis.com/maps/api/geocode/json?address=" + encodeURIComponent(venue) + "&key=" + apiKey;
+  // api key
+  var apiKey = "AIzaSyDCyj1LQMqFPcQhgfW92vR8BtXhlDIvF-4";
+  // request
+  var geocoder = "https://maps.googleapis.com/maps/api/geocode/json?address=" + encodeURIComponent(venue) + "&key=" + apiKey;
   
-	return $.getJSON(geocoder, function(response){return response.responseJSON})
+  return $.getJSON(geocoder, function(response){return response.responseJSON})
 }
 
 function extractLatLon(venue){
-	geo = fetchGeo(venue);
-	return {
-		"address": geo.responseJSON.results[0].formatted_address,
-		"location": geo.responseJSON.results[0].geometry.location
-	}
+  geo = fetchGeo(venue);
+  return {
+    "address": geo.responseJSON.results[0].formatted_address,
+    "location": geo.responseJSON.results[0].geometry.location
+  }
 }
