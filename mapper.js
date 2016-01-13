@@ -3,6 +3,7 @@
 var data;
 var map;
 var resp;
+var geojson;
 
 // 
 
@@ -57,7 +58,9 @@ function setupMap(){
     L.mapbox.accessToken = 'pk.eyJ1IjoibWV0YXN5biIsImEiOiIwN2FmMDNhNTRhOWQ3NDExODI1MTllMDk1ODc3NTllZiJ9.Bye80QJ4r0RJsKj4Sre6KQ';
 
     // Init map
-    map = L.mapbox.map('map', 'mapbox.streets')
+    map = L.mapbox.map('map', 'mapbox.dark', {
+      maxZoom: 19
+    })
       .setView([37.7600, -122.416], 13);
   
 
@@ -159,7 +162,7 @@ function geojsonify(data){
           "venue": data[dateKeys[i]][j]['venue'],
           "bands": data[dateKeys[i]][j]['bands'],
           "details": data[dateKeys[i]][j]['details'],
-          'marker-color': '#548cba',
+          'marker-color': '#33CC33', //+Math.floor(Math.random()*16777215).toString(16), //random colors !
           'marker-size': 'large',
           'marker-symbol': 'music'
         }
@@ -183,26 +186,32 @@ function plotShows(json){
   return new Promise(function(resolve, reject){
 
     // get that geojson
-    var geojson = geojsonify(sortByDate(json));
+    geojson = geojsonify(sortByDate(json));
 
-    // empty layer
-    var myLayer = L.mapbox.featureLayer().addTo(map)
+    // attach data
+    var myLayer = L.mapbox.featureLayer(geojson)
+    // make clustergroup
+    var clusterGroup = new L.MarkerClusterGroup({spiderfyOnMaxZoom: true});
+    // add features
+    clusterGroup.addLayer(myLayer);
+    // add cluster layer
+    map.addLayer(clusterGroup);
 
-    myLayer.on('layeradd', function(e) {
-      var marker = e.layer,
-        feature = marker.feature;
+    // for each layer in feature layer
+    myLayer.eachLayer(e => {
 
+      var marker = e;
+      var feature = e.feature;
+        
       // Create custom popup content
       var popupContent = L.mapbox.template('<h1> {{properties.venue}} </h1><br><h3> {{properties.date}} </h3><br><h2> {{#properties.bands}} - {{.}} <br> {{/properties.bands}} </h2><br><h2> {{properties.details}} </h2><br>', feature)
 
-      // http://leafletjs.com/reference.html#popup
       marker.bindPopup(popupContent,{
         closeButton: true,
         minWidth: 320
       });
     });
 
-    myLayer.setGeoJSON(geojson);
 
     if (geojson){
       resolve(console.log('Shows plotted.'))

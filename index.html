@@ -15,6 +15,12 @@
     <!-- Main -->
     <script src="mapper.js"></script>
 
+    <!-- MarkerCluster -->
+
+    <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
+    <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
+    <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
+
 
     <!-- CSS -->
     <link href='https://api.mapbox.com/mapbox.js/v2.2.3/mapbox.css' rel='stylesheet' />
@@ -34,10 +40,7 @@
 
 <script id="template" type="x-tmpl-mustache">
 
-<h1> {{feature.properties.venue}} </h1>
-<h3> {{feature.properties.date}} </h3>
-<h2> {{feature.properties.bands}} </h2>
-<h2> {{feature.properties.details}} </h2>
+<h1> {{properties.venue}} </h1><br><h3> {{properties.date}} </h3><br><h2> {{properties.bands}} </h2><br><h2> {{properties.details}} </h2><br>
 
 </script>
 
