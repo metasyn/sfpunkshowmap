@@ -62,6 +62,9 @@ function setupMap(){
       maxZoom: 17
     })
       .setView([37.7600, -122.416], 13);
+
+    // Locate me button
+    L.control.locate().addTo(map);
   
 
     if (map) {
