@@ -147,7 +147,16 @@ lonlatDictionary = {
   'Great American Music Hall, S.F.': [-122.4210104, 37.784807],
   'Fillmore, S.F.': [-122.4352607, 37.7839302],
   'Rickshaw Stop, S.F.': [-122.422641, 37.7760029],
-  'Independent, S.F.': [-122.4398436, 37.7755465]
+  'Independent, S.F.': [-122.4398436, 37.7755465],
+  'Civic Center, 99 Grove Street, S.F.': [-122.4195095, 37.7780757],
+  'Masonic, S.F': [-122.4153748, 37.7912915],
+  'Plough and Stars, 116 Clement St., S.F.': [-122.4627223, 37.7832646],
+  'Senator Theater, Chico': [-121.8397472, 39.728102],
+  'Social Hall, S.F.': [-122.4234378, 37.7877708],
+  'Bender\'s, S.F.': [-122.4194942, 37.7601859],
+  'Fox Theater, Oakland': [-122.2722522, 37.8080016],
+  'Night Light, Oakland':[-122.2781325, 37.7971539],
+  'Stork Club, Oakland': [-122.2706259, 37.8131318]
 }
 
 /////////////
@@ -334,13 +343,14 @@ function fetchGeo(venue){
   // request
   var geocoder = "https://maps.googleapis.com/maps/api/geocode/json?address=" + encodeURIComponent(venue) + "&key=" + apiKey;
   
-  return $.getJSON(geocoder, function(response){return response.responseJSON})
+  return $.getJSON(geocoder, function(response){
+    return {
+    "address": response.responseJSON.results[0].formatted_address,
+    "location": response.responseJSON.results[0].geometry.location
+  }})
 }
 
 function extractLatLon(venue){
   geo = fetchGeo(venue);
-  return {
-    "address": geo.responseJSON.results[0].formatted_address,
-    "location": geo.responseJSON.results[0].geometry.location
-  }
+  return 
 }
