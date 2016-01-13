@@ -4,12 +4,16 @@ var data;
 var map;
 var resp;
 var geojson;
+var organized;
+var myLayer;
+var overlays;
+var filters;
 
-// 
+// the scrape
 
-var url = "http://www.foopee.com/punk/the-list/by-date.1.html";
+var urls = "'http://www.foopee.com/punk/the-list/by-date.0.html', 'http://www.foopee.com/punk/the-list/by-date.1.html'";
 var xpath = "//body/ul/li";
-var query = "select * from html where url='" + url  + "' and xpath='" + xpath + "'";
+var query = "select * from html where url in (" + urls  + ") and xpath='" + xpath + "'";
 var yql_url = "https://query.yahooapis.com/v1/public/yql?format=json&q=" + encodeURIComponent(query);
 
 
@@ -28,7 +32,8 @@ function get(url) {
   req.onload = function() {
     if (req.status == 200) {
       resp = JSON.parse(req.response);
-    resolve(console.log('Request success.'));;
+      organized = sortByDate(resp);
+      resolve(console.log('Request success.'));;
     }
     else {
     reject(console.log(Error(req.statusText)));
@@ -48,6 +53,15 @@ function get(url) {
 ////////////
 // MAPBOX /
 //////////
+
+// defaults
+function ModifiedClusterGroup() {
+  return new L.MarkerClusterGroup({
+      spiderfyOnMaxZoom: true,
+      maxClusterRadius: 1,
+      spiderfyDistanceMultiplier: 3,
+    });
+}
 
 
 function setupMap(){
@@ -75,6 +89,44 @@ function setupMap(){
     }
   });
 }
+
+// filters
+
+function populateDates(organized){
+  // grab form
+  var form = document.getElementById('date-selector');
+  var dates = Object.keys(organized);
+
+  // lazy
+  form.innerHTML = '' 
+  for (var d = 0; d < dates.length; d++){
+    var le_radio = "<div><input type='checkbox' name='filters' onclick='showShows();' value='" + dates[d] +"' checked> " +  dates[d] + "</div>"
+    form.innerHTML = form.innerHTML + le_radio
+  }
+  filters = document.getElementById('date-selector').filters;
+}
+
+
+
+function showShows() {
+
+    var list = [];
+    // first collect all of the checked boxes and create an array of strings
+    for (var i = 0; i < filters.length; i++) {
+        if (filters[i].checked) list.push(filters[i].value);
+    }
+    // then remove any previously-displayed marker groups
+    overlays.clearLayers();
+    // create a new marker group
+    var clusterGroup = ModifiedClusterGroup().addTo(overlays);
+    // and add any markers that fit the filtered criteria to that group.
+    myLayer.eachLayer(function(layer) {
+        if (list.indexOf(layer.feature.properties.date) !== -1) {
+            clusterGroup.addLayer(layer);
+        } 
+    });
+}
+
 
 
 ////////////
@@ -113,6 +165,7 @@ function sortByDate(j){
 
     organized[data[i]['a']['b']] = [];
 
+
     if (data[i]['ul']['li'].length == undefined){
       data[i]['ul']['li'] = Array(data[i]['ul']['li'])
     }
@@ -125,7 +178,8 @@ function sortByDate(j){
       var details = show['content'].slice(0, -1); // new line at the end
       var lineup = show['a'];
 
-      var bands = [];
+      // In case its a single artist, we need to make an array
+      var bands = (lineup.length) ? [] : [lineup['content']]
 
       // loop through bands
       for (var bandIndex = 0; bandIndex < lineup.length; bandIndex++){
@@ -164,7 +218,7 @@ function geojsonify(data){
           "date": dateKeys[i],
           "venue": data[dateKeys[i]][j]['venue'],
           "bands": data[dateKeys[i]][j]['bands'],
-          "details": data[dateKeys[i]][j]['details'],
+          "details": data[dateKeys[i]][j]['details'].replace(/ ,/g, ''), // fucking commas
           'marker-color': '#33CC33', //+Math.floor(Math.random()*16777215).toString(16), //random colors !
           'marker-size': 'large',
           'marker-symbol': 'music'
@@ -192,17 +246,17 @@ function plotShows(json){
     geojson = geojsonify(sortByDate(json));
 
     // attach data
-    var myLayer = L.mapbox.featureLayer(geojson)
+    myLayer = L.mapbox.featureLayer(geojson)
+
     // make clustergroup
-    var clusterGroup = new L.MarkerClusterGroup({
-      spiderfyOnMaxZoom: true,
-      maxClusterRadius: 1,
-      spiderfyDistanceMultiplier: 3,
-    });
+    var clusterGroup = ModifiedClusterGroup();
     // add features
     clusterGroup.addLayer(myLayer);
+    overlays = L.layerGroup().addTo(map);
     // add cluster layer
-    map.addLayer(clusterGroup);
+    // overlays are multiple layers
+    // add in showShows()
+    showShows();
 
     // for each layer in feature layer
     myLayer.eachLayer(e => {
@@ -219,6 +273,9 @@ function plotShows(json){
       });
     });
 
+
+
+    // update function for coordinates infobox
     function onmove() {
       // Get the map bounds - the top-left and bottom-right locations.
       var inBounds = [],
@@ -228,7 +285,7 @@ function plotShows(json){
         // with the current map bounds.
         if (bounds.contains(marker.getLatLng())) {
             var feature = marker.feature;
-            var coordsTemplate = L.mapbox.template('{{properties.venue}}: {{#properties.bands}} {{.}}, {{/properties.bands}} ', feature)
+            var coordsTemplate = L.mapbox.template('{{properties.date}} - {{properties.venue}} |{{#properties.bands}} {{.}} |{{/properties.bands}}{{properties.details}}', feature)
             inBounds.push(coordsTemplate);
         }
       });
@@ -257,7 +314,7 @@ function plotShows(json){
 /////////////////
 
 
-get(yql_url).then(resolve => {setupMap(); plotShows(resp)})
+get(yql_url).then(resolve => {setupMap(); populateDates(organized); plotShows(resp); })
 
 
 
