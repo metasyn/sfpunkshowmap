@@ -59,7 +59,7 @@ function setupMap(){
 
     // Init map
     map = L.mapbox.map('map', 'mapbox.dark', {
-      maxZoom: 19
+      maxZoom: 17
     })
       .setView([37.7600, -122.416], 13);
   
@@ -191,7 +191,11 @@ function plotShows(json){
     // attach data
     var myLayer = L.mapbox.featureLayer(geojson)
     // make clustergroup
-    var clusterGroup = new L.MarkerClusterGroup({spiderfyOnMaxZoom: true});
+    var clusterGroup = new L.MarkerClusterGroup({
+      spiderfyOnMaxZoom: true,
+      maxClusterRadius: 100,
+      spiderfyDistanceMultiplier: 3,
+    });
     // add features
     clusterGroup.addLayer(myLayer);
     // add cluster layer
@@ -211,6 +215,28 @@ function plotShows(json){
         minWidth: 320
       });
     });
+
+    function onmove() {
+      // Get the map bounds - the top-left and bottom-right locations.
+      var inBounds = [],
+      bounds = map.getBounds();
+      clusterGroup.eachLayer(function(marker) {
+        // For each marker, consider whether it is currently visible by comparing
+        // with the current map bounds.
+        if (bounds.contains(marker.getLatLng())) {
+            var feature = marker.feature;
+            var coordsTemplate = L.mapbox.template('{{properties.venue}}: {{#properties.bands}} {{.}}, {{/properties.bands}} ', feature)
+            inBounds.push(coordsTemplate);
+        }
+      });
+      // Display a list of markers.
+      document.getElementById('coordinates').innerHTML = inBounds.join('\n');
+    }
+
+    map.on('move', onmove);
+    // call onmove off the bat so that the list is populated.
+    // otherwise, there will be no markers listed until the map is moved.
+    onmove();
 
 
     if (geojson){

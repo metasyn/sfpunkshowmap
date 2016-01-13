@@ -1,41 +1,56 @@
 <!DOCTYPE html>
 <html>
-    <head>
-    <meta charset=utf-8 />
-    <title>A simple map</title>
+  <head>
+  <meta charset=utf-8 />
+  <title>A simple map</title>
 
-    <!-- Initalize viewport -->
-    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <!-- Initalize viewport -->
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 
-    <!-- Deps -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
-    <script src="https://api.mapbox.com/mapbox.js/v2.2.3/mapbox.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.min.js"></script>
+  <!-- Deps -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
+  <script src="https://api.mapbox.com/mapbox.js/v2.2.3/mapbox.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.min.js"></script>
 
-    <!-- Main -->
-    <script src="mapper.js"></script>
+  <!-- Main -->
+  <script src="mapper.js"></script>
 
-    <!-- MarkerCluster -->
-
-    <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
-    <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
-    <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
-
-
-    <!-- CSS -->
-    <link href='https://api.mapbox.com/mapbox.js/v2.2.3/mapbox.css' rel='stylesheet' />
+  <!-- MarkerCluster -->
+  <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
+  <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
+  <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
 
 
-    <!-- Inline, just for now -->
-    <style>
-      body { margin:0; padding:0; }
-      #map { position:absolute; top:0; bottom:0; width:100%; }
-    </style>
+  <!-- CSS -->
+  <link href='https://api.mapbox.com/mapbox.js/v2.2.3/mapbox.css' rel='stylesheet' />
+
+
+  <!-- Inline, just for now -->
+  <style>
+    body { margin:0; padding:0; }
+    #map { position:absolute; top:0; bottom:0; width:100%; }
+
+    pre.ui-coordinates {
+      background:rgba(0,0,0,0.5);
+      position:absolute;
+      bottom:10px;
+      left:10px;
+      padding:5px 10px;
+      color:#fff;
+      font-size:12px;
+      line-height:18px;
+      border-radius:3px;
+      max-height:300px;
+      overflow:auto;
+      width:600px;
+    }
+  </style>
 
 </head>
 
 <body>
-    <div id='map'></div>
+  <div id='map'></div>
+  <pre id='coordinates' class='ui-coordinates'></pre>
 </body>
 
 <script id="template" type="x-tmpl-mustache">
