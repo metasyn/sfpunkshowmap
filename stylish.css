@@ -1,0 +1,38 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+pre.ui-coordinates {
+  background: rgba(0,0,0,0.5);
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  padding: 5px 10px;
+  color: #fff;
+  font-size: 12px;
+  line-height: 18px;
+  border-radius: 3px;
+  max-height: 300px;
+  overflow: auto;
+  width: 600px;
+}
+
+#date-selector {
+  background: rgba(0,0,0,0.5);
+  position: absolute;
+  color: #fff;
+  font-size: 12px;
+  line-height: 18px;
+  top: 10px;
+  right: 10px;
+  width: 150px;
+  padding: 5px;
+}
