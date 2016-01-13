@@ -196,7 +196,7 @@ function plotShows(json){
     // make clustergroup
     var clusterGroup = new L.MarkerClusterGroup({
       spiderfyOnMaxZoom: true,
-      maxClusterRadius: 100,
+      maxClusterRadius: 1,
       spiderfyDistanceMultiplier: 3,
     });
     // add features
