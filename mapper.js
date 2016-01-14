@@ -59,7 +59,16 @@ function ModifiedClusterGroup() {
   return new L.MarkerClusterGroup({
       spiderfyOnMaxZoom: true,
       maxClusterRadius: 1,
-      spiderfyDistanceMultiplier: 3,
+      spiderfyDistanceMultiplier: 3
+      /* custom icons ?
+      iconCreateFunction: function(cluster) {
+        return L.mapbox.marker.icon({
+          // show the number of markers in the cluster on the icon.
+          'marker-symbol': cluster.getChildCount(),
+          'marker-color': '#a0d6b4'
+        });
+      }
+      */
     });
 }
 
@@ -151,6 +160,7 @@ lonlatDictionary = {
   'Civic Center, 99 Grove Street, S.F.': [-122.4195095, 37.7780757],
   'Masonic, S.F': [-122.4153748, 37.7912915],
   'Plough and Stars, 116 Clement St., S.F.': [-122.4627223, 37.7832646],
+  'Monarch, 101 6th Street, S.F.': [-122.410645, 37.7810082],
   'Senator Theater, Chico': [-121.8397472, 39.728102],
   'Social Hall, S.F.': [-122.4234378, 37.7877708],
   'Bender\'s, S.F.': [-122.4194942, 37.7601859],
@@ -184,7 +194,7 @@ function sortByDate(j){
 
       var show = data[i]['ul']['li'][showIndex];
       var venue = show['b']['a']['content'];
-      var details = show['content'].slice(0, -1); // new line at the end
+      var details = show['content'] === undefined ? '' : show['content'].slice(0, -1); // new line at the end
       var lineup = show['a'];
 
       // In case its a single artist, we need to make an array
@@ -354,3 +364,6 @@ function extractLatLon(venue){
   geo = fetchGeo(venue);
   return 
 }
+
+
+

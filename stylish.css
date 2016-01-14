@@ -11,6 +11,8 @@ body {
 }
 
 pre.ui-coordinates {
+  resize: both;
+  overflow: auto;
   background: rgba(0,0,0,0.5);
   position: absolute;
   bottom: 10px;
