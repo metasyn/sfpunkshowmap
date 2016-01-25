@@ -8,6 +8,7 @@ var organized;
 var myLayer;
 var overlays;
 var filters;
+var selectedDatesList;
 
 // the scrape
 
@@ -107,11 +108,12 @@ function populateDates(organized){
   var dates = Object.keys(organized);
 
   // lazy
-  form.innerHTML = '' 
+  form.innerHTML = '<div>' 
   for (var d = 0; d < dates.length; d++){
-    var le_radio = "<div><input type='checkbox' name='filters' onclick='showShows();' value='" + dates[d] +"' checked> " +  dates[d] + "</div>"
+    var le_radio = "<input type='checkbox' name='filters' onclick='showShows();' value='" + dates[d] +"' checked> " +  dates[d]
     form.innerHTML = form.innerHTML + le_radio
   }
+  form.innerHTML += '</div>'
   filters = document.getElementById('date-selector').filters;
 }
 
@@ -119,10 +121,10 @@ function populateDates(organized){
 
 function showShows() {
 
-    var list = [];
+    selectedDatesList = [];
     // first collect all of the checked boxes and create an array of strings
     for (var i = 0; i < filters.length; i++) {
-        if (filters[i].checked) list.push(filters[i].value);
+        if (filters[i].checked) selectedDatesList.push(filters[i].value);
     }
     // then remove any previously-displayed marker groups
     overlays.clearLayers();
@@ -130,10 +132,14 @@ function showShows() {
     var clusterGroup = ModifiedClusterGroup().addTo(overlays);
     // and add any markers that fit the filtered criteria to that group.
     myLayer.eachLayer(function(layer) {
-        if (list.indexOf(layer.feature.properties.date) !== -1) {
+        if (selectedDatesList.indexOf(layer.feature.properties.date) !== -1) {
             clusterGroup.addLayer(layer);
         } 
     });
+
+    // update coordinates box
+    onmove()
+
 }
 
 
@@ -194,7 +200,7 @@ function sortByDate(j){
 
       var show = data[i]['ul']['li'][showIndex];
       var venue = show['b']['a']['content'];
-      var details = show['content'] === undefined ? '' : show['content'].slice(0, -1); // new line at the end
+      var details = show['content'] ? '' : show['content'].slice(0, -1); // new line at the end
       var lineup = show['a'];
 
       // In case its a single artist, we need to make an array
@@ -261,6 +267,26 @@ function plotShows(json){
 
   return new Promise(function(resolve, reject){
 
+
+    // update function for coordinates infobox
+    window.onmove = function onmove() {
+      // Get the map bounds - the top-left and bottom-right locations.
+      var inBounds = [],
+      bounds = map.getBounds();
+      clusterGroup.eachLayer(function(marker) {
+        // For each marker, consider whether it is currently visible by comparing
+        // with the current map bounds.
+        if (bounds.contains(marker.getLatLng()) && selectedDatesList.indexOf(marker.feature.properties.date) !== -1) {
+            var feature = marker.feature;
+            var coordsTemplate = L.mapbox.template('{{properties.date}} - {{properties.venue}} |{{#properties.bands}} {{.}} |{{/properties.bands}}{{properties.details}}', feature)
+            inBounds.push(coordsTemplate);
+        }
+      });
+      // Display a list of markers.
+      document.getElementById('coordinates').innerHTML = inBounds.join('\n');
+    }
+
+
     // get that geojson
     geojson = geojsonify(sortByDate(json));
 
@@ -294,28 +320,11 @@ function plotShows(json){
 
 
 
-    // update function for coordinates infobox
-    function onmove() {
-      // Get the map bounds - the top-left and bottom-right locations.
-      var inBounds = [],
-      bounds = map.getBounds();
-      clusterGroup.eachLayer(function(marker) {
-        // For each marker, consider whether it is currently visible by comparing
-        // with the current map bounds.
-        if (bounds.contains(marker.getLatLng())) {
-            var feature = marker.feature;
-            var coordsTemplate = L.mapbox.template('{{properties.date}} - {{properties.venue}} |{{#properties.bands}} {{.}} |{{/properties.bands}}{{properties.details}}', feature)
-            inBounds.push(coordsTemplate);
-        }
-      });
-      // Display a list of markers.
-      document.getElementById('coordinates').innerHTML = inBounds.join('\n');
-    }
 
     map.on('move', onmove);
     // call onmove off the bat so that the list is populated.
     // otherwise, there will be no markers listed until the map is moved.
-    onmove();
+    window.onmove();
 
 
     if (geojson){
