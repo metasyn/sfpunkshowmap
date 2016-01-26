@@ -181,7 +181,15 @@ lonlatDictionary = {
   'Institute for Integral Studies, 1453 Mission Street, S.F.': [-122.4185198, 37.7746224],
   'Artist\'s Television Access, 992 Valencia St., S.F.': [-122.4236529, 37.7570751],
   'New Parish, Oakland': [-122.2747969, 37.8076511],
-  'Bimbo\'s 365 Club, S.F.': [-122.4155251, 37.8037564]
+  'Bimbo\'s 365 Club, S.F.': [-122.4155251, 37.8037564],
+  'Elbo Room, S.F.': [-122.4215391, 37.7625099],
+  'Slim\'s, S.F.': [-122.4154437, 37.7714655],
+  'Brick and Mortar, S.F.': [-122.4226282, 37.7697351],
+  'Catalyst Atrium, Santa Cruz': [-122.0259175, 36.9712949],
+  'Sweetwater Music Hall, Mill Valley': [-122.550201, 37.9069745],
+  'Harlow\'s, Sacramento': [-121.4701893, 38.573828],
+  'Catalyst, Santa Cruz': [-122.0281115, 36.9712992],
+  'Caravan Lounge, San Jose': [-121.8946633, 37.3329336]
 }
 
 /////////////
@@ -412,7 +420,6 @@ function getLonLat(venue){
   fetchGeo(venue).then(resolve =>{
     geoResponse = [geoResponse.results[0].geometry.location.lng, geoResponse.results[0].geometry.location.lat]
   })
-  return geoResponse
 }
 
 
