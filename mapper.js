@@ -9,6 +9,7 @@ var myLayer;
 var overlays;
 var filters;
 var selectedDatesList;
+var geoResponse;
 
 // the scrape
 
@@ -246,7 +247,7 @@ function geojsonify(data){
 
       var show = {
         "type": "Feature",
-        "geometry": {"type": "Point", "coordinates": lonlatDictionary[data[dateKeys[i]][j]['venue']] || [0, 0]},
+        "geometry": {"type": "Point", "coordinates": lonlatDictionary[data[dateKeys[i]][j]['venue']] || [-122.422960, 37.826524]},
         "properties": {
           "date": dateKeys[i],
           "venue": data[dateKeys[i]][j]['venue'],
@@ -361,13 +362,14 @@ function modalPop(){
 // control logic /
 /////////////////
 
-
-get(yql_url).then(resolve => {
-  setupMap(); 
-  populateDates(organized); 
-  plotShows(resp); 
-  modalPop();
-})
+  get(yql_url).then(resolve => {
+    try {
+      setupMap(); 
+    } catch(err) {vex.dialog.alert('OH SHIT SOMETHINGS BROKEN. The List could be down, rawgit could be mad, or my code could be broken.')}
+    populateDates(organized); 
+    plotShows(resp); 
+    modalPop();
+  })
 
 
 
@@ -382,21 +384,35 @@ get(yql_url).then(resolve => {
 
 function fetchGeo(venue){
 
-  // api key
-  var apiKey = "AIzaSyDCyj1LQMqFPcQhgfW92vR8BtXhlDIvF-4";
-  // request
-  var geocoder = "https://maps.googleapis.com/maps/api/geocode/json?address=" + encodeURIComponent(venue) + "&key=" + apiKey;
-  
-  return $.getJSON(geocoder, function(response){
-    return {
-    "address": response.responseJSON.results[0].formatted_address,
-    "location": response.responseJSON.results[0].geometry.location
-  }})
+  return new Promise(function(resolve, reject){
+
+    // api key
+    var apiKey = "AIzaSyDCyj1LQMqFPcQhgfW92vR8BtXhlDIvF-4";
+    // request
+    var geocoder = "https://maps.googleapis.com/maps/api/geocode/json?address=" + encodeURIComponent(venue) + "&key=" + apiKey;
+    
+    //clear
+    geoResponse = '';
+
+    $.getJSON(geocoder, function(response){
+      
+      if (response){
+        geoResponse = response;
+        resolve(console.log('Looked up venue.'))
+      }
+      else { 
+        reject(console.log(Error('Venue lookup failure.')));
+      }
+    })
+  })
 }
 
-function extractLatLon(venue){
-  geo = fetchGeo(venue);
-  return 
+function getLonLat(venue){
+
+  fetchGeo(venue).then(resolve =>{
+    geoResponse = [geoResponse.results[0].geometry.location.lng, geoResponse.results[0].geometry.location.lat]
+  })
+  return geoResponse
 }
 
 
