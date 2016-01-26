@@ -172,7 +172,8 @@ lonlatDictionary = {
   'Bender\'s, S.F.': [-122.4194942, 37.7601859],
   'Fox Theater, Oakland': [-122.2722522, 37.8080016],
   'Night Light, Oakland':[-122.2781325, 37.7971539],
-  'Stork Club, Oakland': [-122.2706259, 37.8131318]
+  'Stork Club, Oakland': [-122.2706259, 37.8131318],
+  'Music City, 1353 Bush Street, S.F.' : [-122.4195814, 37.7885446]
 }
 
 /////////////
