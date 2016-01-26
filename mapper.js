@@ -173,7 +173,14 @@ lonlatDictionary = {
   'Fox Theater, Oakland': [-122.2722522, 37.8080016],
   'Night Light, Oakland':[-122.2781325, 37.7971539],
   'Stork Club, Oakland': [-122.2706259, 37.8131318],
-  'Music City, 1353 Bush Street, S.F.' : [-122.4195814, 37.7885446]
+  'Music City, 1353 Bush Street, S.F.' : [-122.4195814, 37.7885446],
+  '518 Valencia, S.F.': [-122.4243926, 37.7644923],
+  'Annex, 468 3rd Street, Oakland': [-122.2766342, 37.7972863],
+  'Honey Hive Gallery, 4117 Judah Street, S.F.': [-122.5063551, 37.7601905],
+  'Institute for Integral Studies, 1453 Mission Street, S.F.': [-122.4185198, 37.7746224],
+  'Artist\'s Television Access, 992 Valencia St., S.F.': [-122.4236529, 37.7570751],
+  'New Parish, Oakland': [-122.2747969, 37.8076511],
+  'Bimbo\'s 365 Club, S.F.': [-122.4155251, 37.8037564]
 }
 
 /////////////
