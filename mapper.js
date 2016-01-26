@@ -200,7 +200,7 @@ function sortByDate(j){
 
       var show = data[i]['ul']['li'][showIndex];
       var venue = show['b']['a']['content'];
-      var details = show['content'] ? '' : show['content'].slice(0, -1); // new line at the end
+      var details = show['content'] === undefined ? '' : show['content'].slice(0, -1); // new line at the end
       var lineup = show['a'];
 
       // In case its a single artist, we need to make an array
