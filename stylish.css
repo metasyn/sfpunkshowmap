@@ -60,3 +60,22 @@ pre.ui-coordinates {
   user-select: none;           /* non-prefixed version, currently
                                   not supported by any browser */
 }
+
+.vex-overlay {
+  height: 150vh;
+}
+
+
+.vex-content p {
+  font-size: 14px;
+  line-height: 1.25em;
+}
+
+.vex-content pre {
+  font-size: 14px;
+  line-height: 1em;
+  }
+
+.vex-content h1 {
+  font-size: 32px;
+}
