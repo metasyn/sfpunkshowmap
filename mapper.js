@@ -336,13 +336,30 @@ function plotShows(json){
   });
 }
 
+////////////////
+// vex modal //
+///////////////
+
+vex.defaultOptions.className = 'vex-theme-flat-attack';
+
+
+function modalPop(){  
+  var modalMessage = $('#modal-template').html();
+  $('#q').on("click hover", vex.dialog.alert(modalMessage))
+}
+
 
 ///////////////////
 // control logic /
 /////////////////
 
 
-get(yql_url).then(resolve => {setupMap(); populateDates(organized); plotShows(resp); })
+get(yql_url).then(resolve => {
+  setupMap(); 
+  populateDates(organized); 
+  plotShows(resp); 
+  modalPop();
+})
 
 
 

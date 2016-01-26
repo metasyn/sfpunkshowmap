@@ -21,12 +21,17 @@
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 
   <!-- Deps -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
-  <script src="https://api.mapbox.com/mapbox.js/v2.2.3/mapbox.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.min.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js'></script>
+  <script src='https://api.mapbox.com/mapbox.js/v2.2.3/mapbox.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.min.js'></script>
+
+  <!-- Modal/Vex -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vex-js/2.3.3/js/vex.combined.min.js'></script>
+  <link href='https://cdnjs.cloudflare.com/ajax/libs/vex-js/2.3.3/css/vex.min.css' rel='stylesheet'></link>
+  <link href='https://cdnjs.cloudflare.com/ajax/libs/vex-js/2.3.3/css/vex-theme-flat-attack.min.css' rel='stylesheet'></link>
 
   <!-- Main -->
-  <script src="mapper.js"></script>
+  <script src='mapper.js'></script>
 
   <!-- MarkerCluster -->
   <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
@@ -46,12 +51,6 @@
   <link href='https://api.mapbox.com/mapbox.js/v2.2.3/mapbox.css' rel='stylesheet' />
   <link href='stylish.css' rel='stylesheet' />
 
-
-  <!-- Inline, just for now -->
-  <style>
-    
-  </style>
-
 </head>
 
 <body>
@@ -59,16 +58,34 @@
   <pre id='coordinates' class='ui-coordinates'>
     <p>Details of on-screen shows:</p>
   </pre>
-
   <form id='date-selector'></form>
 
+  <div id='q' class='noselect' onclick="modalPop()">
+    ?
+  </div>
+
+  <div id="modal-template">
+    <h1>SF Show Map</h1>
+    <p>
+      You can select which dates you are interested on the bottom. The box below that will give you details of the on-screen shows.
+      Clicking on a venue with a number will split out the individual shows. Clicking on one will give you details of the lineup and cost, if known. 
+    </p>
+    <h3>Legend</h3>
+    <pre>
+      *    recommendable shows
+      a/a  all ages
+      $    will probably sell out
+      @    pit warning
+      ^    under 21 must buy drink tickets   
+      #    no ins/outs
+    </pre>
+
+    <p>
+      All of this data comes from <a href="http://www.foopee.com/punk/the-list/">The List</a><br>
+      Please report any bugs on <a href="https://github.com/metasyn/sfpunkshowmap/issues">Github</a>
+    </p>
+  </div>
+
 </body>
-
-<script id="template" type="x-tmpl-mustache">
-
-<h1> {{properties.venue}} </h1><br><h3> {{properties.date}} </h3><br><h2> {{properties.bands}} </h2><br><h2> {{properties.details}} </h2><br>
-
-</script>
-
 
 </html>
