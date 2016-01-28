@@ -10,13 +10,25 @@ body {
   width: 100%;
 }
 
-pre.ui-coordinates {
+#panel {
   resize: both;
   overflow: auto;
-  background: rgba(0,0,0,0.5);
   position: absolute;
-  bottom: 20px;
+  bottom: 30px;
+  border-radius: 3px;
+  max-height: 250px;
+  overflow: auto;
+  width: 100%;
+}
+
+#panel-rel {
+  position: relative;
+}
+
+pre.ui-coordinates {
+  background: rgba(0,0,0,0.5);
   padding: 5px 10px 10px 5px;
+  position: relative;
   color: #fff;
   font-size: 12px;
   line-height: 18px;
@@ -24,15 +36,17 @@ pre.ui-coordinates {
   max-height: 100px;
   overflow: auto;
   width: 100%;
+  margin: 2px;
 }
+
+
 
 #date-selector-container {
   background: rgba(0,0,0,0.5);
-  position: absolute;
+  position: relative;
   color: #fff;
   font-size: 12px;
   line-height: 18px;
-  bottom: 150px;
   width: 100%;
   padding: 5px 10px 10px 5px;
 }

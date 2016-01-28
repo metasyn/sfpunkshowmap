@@ -55,15 +55,23 @@
 
 <body>
   <div id='map'></div>
-  <pre id='coordinates' class='ui-coordinates'>
-    <p>Details of on-screen shows:</p>
-  </pre>
-  <div id='date-selector-container'>
-    <button onclick="toggleDate('today')">today</button>
-    <button onclick="toggleDate('tomorrow')">tomorrow</button>
-  <br>
-    <form id='date-selector'></form>
-  </div>
+
+    <div id='panel'>
+
+      <div id='date-selector-container'>
+        <button onclick="toggleDate('today')">today</button>
+        <button onclick="toggleDate('tomorrow')">tomorrow</button>
+        <br>
+        <form id='date-selector'></form>
+      </div>
+    
+
+      <pre id='coordinates' class='ui-coordinates'>
+        <p>Details of on-screen shows:</p>
+      </pre>
+
+
+    </div>
 
   <div id='q' class='noselect' onclick="modalPop()">
     ?
