@@ -300,6 +300,7 @@ function plotShows(json){
         }
       });
       // Display a list of markers.
+      inBounds.reverse()
       document.getElementById('coordinates').innerHTML = inBounds.join('\n');
     }
 
@@ -353,6 +354,29 @@ function plotShows(json){
   });
 }
 
+
+function toggleDate(desc){
+  for (var i = 0; i < filters.length; i++){
+
+    if (desc == 'today'){
+      var day = Date().slice(0, 10) // this gives us the foopee time format
+    } else if (desc == 'tomorrow') {
+      var d = new Date()
+      var day = new Date(((d.getTime()/1000) + (60 * 60 * 24)) * 1000) // milliseconds not seconds
+      day = day.toString().slice(0, 10)
+    }
+
+    if (filters[i].value == day){
+      filters[i].checked = 1;
+      } else {
+      filters[i].checked = 0;
+    }
+  }
+
+  // update
+  showShows();
+
+}
 ////////////////
 // vex modal //
 ///////////////

@@ -58,7 +58,12 @@
   <pre id='coordinates' class='ui-coordinates'>
     <p>Details of on-screen shows:</p>
   </pre>
-  <form id='date-selector'></form>
+  <div id='date-selector-container'>
+    <button onclick="toggleDate('today')">today</button>
+    <button onclick="toggleDate('tomorrow')">tomorrow</button>
+  <br>
+    <form id='date-selector'></form>
+  </div>
 
   <div id='q' class='noselect' onclick="modalPop()">
     ?
