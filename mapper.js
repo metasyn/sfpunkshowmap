@@ -189,7 +189,8 @@ lonlatDictionary = {
   'Sweetwater Music Hall, Mill Valley': [-122.550201, 37.9069745],
   'Harlow\'s, Sacramento': [-121.4701893, 38.573828],
   'Catalyst, Santa Cruz': [-122.0281115, 36.9712992],
-  'Caravan Lounge, San Jose': [-121.8946633, 37.3329336]
+  'Caravan Lounge, San Jose': [-121.8946633, 37.3329336],
+  'Public Works, 161 Erie Street at Mission, S.F.': [-122.4194268, 37.7688759]
 }
 
 /////////////
