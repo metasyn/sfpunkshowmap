@@ -362,10 +362,15 @@ function toggleDate(desc){
     if (desc == 'today'){
       var day = Date().slice(0, 10) // this gives us the foopee time format
     } else if (desc == 'tomorrow') {
-      var d = new Date()
-      var day = new Date(((d.getTime()/1000) + (60 * 60 * 24)) * 1000) // milliseconds not seconds
-      day = day.toString().slice(0, 10)
+      var d = new Date();
+      var day = new Date(((d.getTime()/1000) + (60 * 60 * 24)) * 1000); // milliseconds not seconds
+      day = day.toString().slice(0, 10);
     }
+
+    // lol, so foopee puts its date with no zero padding:
+    var day_list = day.split(' ');
+    day_list[2] = String(parseInt(day_list[2]));
+    day = day_list.join(' ');
 
     if (filters[i].value == day){
       filters[i].checked = 1;
