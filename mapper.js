@@ -323,7 +323,7 @@ function plotShows(json){
     showShows();
 
     // for each layer in feature layer
-    myLayer.eachLayer(e => {
+    myLayer.eachLayer(function(e)  {
 
       var marker = e;
       var feature = e.feature;
@@ -400,7 +400,7 @@ function modalPop(){
 // control logic /
 /////////////////
 
-  get(yql_url).then(resolve => {
+  get(yql_url).then(function(resolve) {
     try {
       setupMap(); 
     } catch(err) {vex.dialog.alert('OH SHIT SOMETHINGS BROKEN. The List could be down, rawgit could be mad, or my code could be broken.')}
@@ -447,7 +447,7 @@ function fetchGeo(venue){
 
 function getLonLat(venue){
 
-  fetchGeo(venue).then(resolve =>{
+  fetchGeo(venue).then(function(resolve){
     geoResponse = [geoResponse.results[0].geometry.location.lng, geoResponse.results[0].geometry.location.lat]
   })
 }
