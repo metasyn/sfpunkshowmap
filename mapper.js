@@ -153,6 +153,26 @@ function showShows() {
 
 lonlatDictionary = {
   '924 Gilman Street, Berkeley': [-122.2993211, 37.8795371],
+  'DNA Lounge, S.F.': [122.4126746, 37.7710559],
+  'Eagle, S.F.': [122.4133666, 37.7700044],
+  'Jazzschool, 2087 Addison Street, Berkeley': [122.2709651, 37.8712507],
+  'Warfield, S.F.': [122.4123447, 37.782739],
+  'Neck of the Woods, S.F.': [122.4657314, 37.784179],
+  'Lost Church, 65 Capp, S.F.': [122.418409, 37.765783],
+  'Starline Social Club, 2232 MLK, Oakland': [122.27253, 37.8122828],
+  'Second Act, 1727 Haight Street, S.F.': [122.4534067, 37.769298],
+  'Amoeba Music, S.F.': [122.4548087, 37.768922],
+  'Lobot Gallery, 1800 Campbell St., Oakland': [122.2948787, 37.814835],
+  'Civic Center, S.F.': [-122.4195095, 37.7780757],
+  'Amnesia, S.F.': [122.4233043, 37.75931],
+  'Crate, 420 14th Street, Oakland': [-122.2703209,37.8042683],
+  'Golden Bull, Oakland': [122.2724634, 37.8042002],
+  'Metro, Oakland': [122.2777909, 37.797058],
+  'Mezzanine, S.F.': [122.4102674, 37.7825541],
+  'UC Theater, Berkeley': [122.2719536, 37.8718207],
+  'Legionnaire Saloon, Oakland': [122.2708187, 37.8123826],
+  'Merchants Saloon, 401 2nd Street, Oakland': [122.2775095, 37.7954984],
+  'Masonic, S.F.': [-122.4153747, 37.791287],
   'Hemlock, S.F.': [-122.420301, 37.787356],
   'Chapel, S.F.': [-122.421198, 37.760528],
   'Regency Ballroom, S.F.': [ -122.421573, 37.787836],
@@ -240,6 +260,40 @@ function sortByDate(j){
   return organized
 }
 
+// Compute the edit distance between the two given strings
+function getEditDistance(a, b) {
+  if(a.length === 0) return b.length; 
+  if(b.length === 0) return a.length; 
+
+  var matrix = [];
+
+  // increment along the first column of each row
+  var i;
+  for(i = 0; i <= b.length; i++){
+    matrix[i] = [i];
+  }
+
+  // increment each column in the first row
+  var j;
+  for(j = 0; j <= a.length; j++){
+    matrix[0][j] = j;
+  }
+
+  // Fill in the rest of the matrix
+  for(i = 1; i <= b.length; i++){
+    for(j = 1; j <= a.length; j++){
+      if(b.charAt(i-1) == a.charAt(j-1)){
+        matrix[i][j] = matrix[i-1][j-1];
+      } else {
+        matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, // substitution
+                                Math.min(matrix[i][j-1] + 1, // insertion
+                                         matrix[i-1][j] + 1)); // deletion
+      }
+    }
+  }
+
+  return matrix[b.length][a.length];
+};
 
 
 function geojsonify(data){
@@ -254,14 +308,31 @@ function geojsonify(data){
     // loop through shows
     for (var j = 0; j < data[dateKeys[i]].length; j++){
 
+     
+      var showData = data[dateKeys[i]][j];
+      var venueList = Object.keys(lonlatDictionary);
+
+      // check for misspellings
+      if (!lonlatDictionary[showData['venue']]){
+          for (var v = 0; v < venueList.length; v++){
+            var misspelled = showData['venue'].replace(/\W/g, '')
+            var spelledCorrect = venueList[v].replace(/\W/g, '')
+            var editDistance = getEditDistance(misspelled, spelledCorrect);
+              if (editDistance <= 3){
+                console.log('"' + showData['venue'] + '" has been replaced with "' + venueList[v] + '"');
+                showData['venue'] = venueList[v];
+              }
+          }
+      }
+
       var show = {
         "type": "Feature",
-        "geometry": {"type": "Point", "coordinates": lonlatDictionary[data[dateKeys[i]][j]['venue']] || [-122.422960, 37.826524]},
+        "geometry": {"type": "Point", "coordinates": lonlatDictionary[showData['venue']] || [-122.422960, 37.826524]},
         "properties": {
           "date": dateKeys[i],
-          "venue": data[dateKeys[i]][j]['venue'],
-          "bands": data[dateKeys[i]][j]['bands'],
-          "details": data[dateKeys[i]][j]['details'].replace(/ ,/g, ''), // fucking commas
+          "venue": showData['venue'],
+          "bands": showData['bands'],
+          "details": showData['details'].replace(/ ,/g, ''), // fucking commas
           'marker-color': '#33CC33', //+Math.floor(Math.random()*16777215).toString(16), //random colors !
           'marker-size': 'large',
           'marker-symbol': 'music'
