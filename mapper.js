@@ -448,14 +448,20 @@ function toggleDate(desc){
     }
 
     // lol, so foopee puts its date with no zero padding:
-    var day_list = day.split(' ');
-    day_list[2] = String(parseInt(day_list[2]));
-    day = day_list.join(' ');
+    if (day){
+      var day_list = day.split(' ');
+      day_list[2] = String(parseInt(day_list[2]));
+      day = day_list.join(' ');
+    }
 
     if (filters[i].value == day){
       filters[i].checked = 1;
       } else {
       filters[i].checked = 0;
+    }
+
+    if (desc == 'all'){
+      filters[i].checked = 1
     }
   }
 
