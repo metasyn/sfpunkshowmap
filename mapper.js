@@ -314,6 +314,7 @@ function geojsonify(data){
 
       // check for misspellings
       if (!lonlatDictionary[showData['venue']]){
+        try {
           for (var v = 0; v < venueList.length; v++){
             var misspelled = showData['venue'].replace(/\W/g, '')
             var spelledCorrect = venueList[v].replace(/\W/g, '')
@@ -323,6 +324,9 @@ function geojsonify(data){
                 showData['venue'] = venueList[v];
               }
           }
+        } catch (e) {
+          console.log('Missing Venue?', e);
+        }
       }
 
       var show = {
