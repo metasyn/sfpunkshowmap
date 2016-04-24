@@ -210,7 +210,12 @@ lonlatDictionary = {
   'Harlow\'s, Sacramento': [-121.4701893, 38.573828],
   'Catalyst, Santa Cruz': [-122.0281115, 36.9712992],
   'Caravan Lounge, San Jose': [-121.8946633, 37.3329336],
-  'Public Works, 161 Erie Street at Mission, S.F.': [-122.4194268, 37.7688759]
+  'Public Works, 161 Erie Street at Mission, S.F.': [-122.4194268, 37.7688759],
+  'Greek Theater, UC Berkeley Campus': [-122.2566602, 37.8735759],
+  'El Rey Theater, Chico': [-121.8441985, 39.7295038],
+  'Hatch, 402 15th Street, Oakland': [-122.2717416, 37.8050561],
+  'Octopus Literary Salon, Oakland': [-122.2676085, 37.8104379],
+  'Milk Bar, 1840 Haight St., S.F.': [-122.4548054, 37.7695363]
 }
 
 /////////////
