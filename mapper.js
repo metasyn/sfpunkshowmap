@@ -1,7 +1,5 @@
 // globals
 
-alert('Site is broken for the time being - my YQL query to get the show information is now being blocked and redirected to a robots.txt. Sorry !')
-
 var data;
 var map;
 var resp;
