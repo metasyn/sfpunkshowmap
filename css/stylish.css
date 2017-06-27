@@ -40,18 +40,11 @@ pre.ui-coordinates {
 
 button {
   background-color: #FFF;
-  width: 25%;
-  margin: 0px auto 10px auto;
-  font-size: 16px;
+  font-size: 14px;
+  margin: 0px auto 10px auto 
 }
-
-input {
-  margin-left:1em;
-}
-
 
 #date-selector-container {
-  text-align: center;
   background: rgba(0,0,0,0.5);
   position: relative;
   color: #fff;
@@ -63,7 +56,7 @@ input {
 
 
 #q{
-  font-size: 64px;
+  font-size: 40px;
   color: white;
   z-index: 6;
   position: fixed;
@@ -74,6 +67,7 @@ input {
 #modal-template{
   display: none;
 }
+
 
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */

@@ -26,12 +26,12 @@
   <script src='https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.min.js'></script>
 
   <!-- Modal/Vex -->
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/vex-js/2.3.3/js/vex.combined.min.js'></script>
-  <link href='https://cdnjs.cloudflare.com/ajax/libs/vex-js/2.3.3/css/vex.min.css' rel='stylesheet'></link>
-  <link href='https://cdnjs.cloudflare.com/ajax/libs/vex-js/2.3.3/css/vex-theme-flat-attack.min.css' rel='stylesheet'></link>
+  <script src='js/vex.combined.min.js'></script>
+  <link href='css/vex.min.css' rel='stylesheet'></link>
+  <link href='css/vex-theme-flat-attack.min.css' rel='stylesheet'></link>
 
   <!-- Main -->
-  <script src='mapper.js'></script>
+  <script src='js/mapper.js'></script>
 
   <!-- MarkerCluster -->
   <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
@@ -49,7 +49,7 @@
 
   <!-- CSS -->
   <link href='https://api.mapbox.com/mapbox.js/v2.2.3/mapbox.css' rel='stylesheet' />
-  <link href='stylish.css' rel='stylesheet' />
+  <link href='css/stylish.css' rel='stylesheet' />
 
 </head>
 
@@ -60,7 +60,7 @@
 
       <div id='date-selector-container'>
         <button onclick="toggleDate('today')">today</button>
-        <button onclick="toggleDate('tomorrow')">tmrw</button>
+        <button onclick="toggleDate('tomorrow')">tomorrow</button>
         <button onclick="toggleDate('all')">all</button>
         <br>
         <form id='date-selector'></form>
