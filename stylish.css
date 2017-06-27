@@ -26,10 +26,10 @@ body {
 
 pre.ui-coordinates {
   background: rgba(0,0,0,0.5);
-  padding: 5px 10px 10px 5px;
+  padding: 5px 10px 0px 5px;
   position: relative;
   color: #fff;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 18px;
   border-radius: 3px;
   max-height: 100px;
@@ -38,13 +38,24 @@ pre.ui-coordinates {
   margin: 2px;
 }
 
+button {
+  background-color: #FFF;
+  width: 25%;
+  margin: 0px auto 10px auto;
+  font-size: 16px;
+}
+
+input {
+  margin-left:1em;
+}
 
 
 #date-selector-container {
+  text-align: center;
   background: rgba(0,0,0,0.5);
   position: relative;
   color: #fff;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 18px;
   width: 100%;
   padding: 5px 10px 10px 5px;
