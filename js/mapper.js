@@ -263,7 +263,9 @@ function sortByDate(j) {
 
         // empty date
         organized[dates[i]] = [];
-        var $shows = $results.find('body > li:nth-child(' + i + ')').find('li');
+
+        // Array is zero indexed but nth-child starts at 1
+        var $shows = $results.find('body > li:nth-child(' + i + 1 + ')').find('li');
 
         for (var si = 0; si < $shows.length; si++) {
 
@@ -419,7 +421,7 @@ function plotShows(json) {
 
 
         // get that geojson
-        geojson = geojsonify(sortByDate(json));
+        geojson = geojsonify(organized);
 
         // attach data
         myLayer = L.mapbox.featureLayer(geojson)
