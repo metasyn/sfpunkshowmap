@@ -251,6 +251,7 @@ function parseHTMLToDOM(j){
 function sortByDate(j) {
 
     $results = parseHTMLToDOM(j);
+    console.log($results)
 
     // grab the dates to use as keys
     dates = $results.find('body > li > a').map(function() {
@@ -259,13 +260,16 @@ function sortByDate(j) {
 
     organized = {};
 
+    console.log(dates.length)
+
     for (var i = 0; i < dates.length; i++) {
 
         // empty date
         organized[dates[i]] = [];
 
         // Array is zero indexed but nth-child starts at 1
-        var $shows = $results.find('body > li:nth-child(' + i + 1 + ')').find('li');
+        var index = i + 1
+        var $shows = $results.find('body > li:nth-child(' + index + ')').find('li');
 
         for (var si = 0; si < $shows.length; si++) {
 
